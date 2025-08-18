@@ -6,28 +6,153 @@
   <title>BeastBalak - Netflix Style Showcase</title>
   <link rel="icon" href="https://yt3.googleusercontent.com/J7wynSpzjFkN2YpAiFWTCw14qdDhHyrl6hWqSA7jGelqVAAmj8mLyQaAyI9racPE14zr0KQAd9I=s160-c-k-c0x00ffffff-no-rj" type="image/png">
   <style>
-    body { margin:0; background:#141414; color:white; font-family:Arial, sans-serif; }
-    header { display:flex; justify-content:space-between; align-items:center; padding:10px 20px; background:#000; position:sticky; top:0; z-index:100; }
-    .logo { display:flex; align-items:center; }
-    .logo img { width:46px; height:46px; border-radius:50%; margin-right:10px; }
-    nav a { color:white; margin:0 10px; text-decoration:none; font-weight:bold; }
-    nav a:hover { color:#e50914; }
-    .banner { position:relative; background:url('https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg') center/cover no-repeat; height:400px; display:flex; align-items:flex-end; padding:20px; }
-    .banner h1 { font-size:3rem; margin:0; }
-    .row { margin:20px; }
-    .row h2 { margin-bottom:10px; }
-    .row-posters { display:flex; overflow-x:auto; gap:10px; padding-bottom:10px; }
-    .row-posters::-webkit-scrollbar { display:none; }
-    .row-posters img { max-height:160px; object-fit:cover; cursor:pointer; transition:transform 0.3s; border-radius:4px; }
-    .row-posters img:hover { transform:scale(1.1); }
+    /* Premium Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    body {
+      margin: 0;
+      background: #141414;
+      color: white;
+      font-family: Arial, sans-serif;
+      animation: fadeIn 1s ease-in-out; /* Main fade-in for the body */
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: #000;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      animation: slideDown 0.5s ease-out; /* Header slide-down effect */
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+    .logo img {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      margin-right: 10px;
+      /* Add a subtle hover effect */
+      transition: transform 0.3s ease;
+    }
+    .logo img:hover {
+      transform: scale(1.05);
+    }
+    nav a {
+      color: white;
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease; /* Smooth color transition on hover */
+    }
+    nav a:hover {
+      color: #e50914;
+    }
+
+    .banner {
+      position: relative;
+      background: url('https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg') center/cover no-repeat;
+      height: 400px;
+      display: flex;
+      align-items: flex-end;
+      padding: 20px;
+      animation: fadeIn 1.5s ease-in-out; /* Banner fade-in */
+    }
+
+    .banner h1 {
+      font-size: 3rem;
+      margin: 0;
+      /* Add a subtle slide-in for the title */
+      animation: slideInLeft 1s ease-out;
+    }
+    @keyframes slideInLeft {
+      from { transform: translateX(-50px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .row {
+      margin: 20px;
+    }
+    .row h2 {
+      margin-bottom: 10px;
+    }
+    .row-posters {
+      display: flex;
+      overflow-x: auto;
+      gap: 10px;
+      padding-bottom: 10px;
+    }
+    .row-posters::-webkit-scrollbar {
+      display: none;
+    }
+    .row-posters img {
+      max-height: 160px;
+      object-fit: cover;
+      cursor: pointer;
+      /* Smooth transition for the hover effect */
+      transition: transform 0.3s ease-in-out;
+      border-radius: 4px;
+    }
+    .row-posters img:hover {
+      transform: scale(1.1);
+    }
+
     /* Modal */
-    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); justify-content:center; align-items:center; z-index:1000; }
-    .modal-content { position:relative; width:80%; max-width:800px; }
-    .modal-content iframe { width:100%; height:450px; }
-    .close { position:absolute; top:-40px; right:0; font-size:2rem; cursor:pointer; }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      /* Add transition for a smooth fade-in/out */
+      transition: opacity 0.5s ease-in-out;
+      opacity: 0; /* Start with opacity 0 to enable the transition */
+    }
+    /* A class to make the modal visible and trigger the transition */
+    .modal.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-content {
+      position: relative;
+      width: 80%;
+      max-width: 800px;
+    }
+    .modal-content iframe {
+      width: 100%;
+      height: 450px;
+    }
+    .close {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
     @media(max-width:768px) {
-      .banner { height:250px; }
-      .banner h1 { font-size:2rem; }
+      .banner { height: 250px; }
+      .banner h1 { font-size: 2rem; }
     }
   </style>
 </head>
@@ -43,28 +168,22 @@
     </nav>
   </header>
 
-  <!-- Banner (featured video) -->
   <section class="banner" style="background:url('https://yt3.googleusercontent.com/R_qJDz24le7XEDj8gFuxVuSU6xHymT95fr-NVWiMDLIg6EPLgXQgpGpZ2jjTjgmYgyZ5tOmL=w1707-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj') center/cover no-repeat;">
-  <h1>BeastBalak</h1>
-</section>
+    <h1>BeastBalak</h1>
+  </section>
 
-  <!-- Rows -->
   <div class="row">
     <h2>Latest Uploads</h2>
     <div class="row-posters">
-        <img src="https://img.youtube.com/vi/GTunYAY52Lw/hqdefault.jpg" data-video="GTunYAY52Lw" alt="">
-        <img src="https://img.youtube.com/vi/RDGhEXpmVgk/hqdefault.jpg" data-video="RDGhEXpmVgk" alt="">
-        <img src="https://img.youtube.com/vi/2vnaxQhUXi8/hqdefault.jpg" data-video="2vnaxQhUXi8" alt="">
-
-     
+      <img src="https://img.youtube.com/vi/GTunYAY52Lw/hqdefault.jpg" data-video="GTunYAY52Lw" alt="">
+      <img src="https://img.youtube.com/vi/RDGhEXpmVgk/hqdefault.jpg" data-video="RDGhEXpmVgk" alt="">
+      <img src="https://img.youtube.com/vi/2vnaxQhUXi8/hqdefault.jpg" data-video="2vnaxQhUXi8" alt="">
     </div>
   </div>
 
-  
-  <!-- Modal -->
   <div class="modal" id="videoModal">
     <div class="modal-content">
-      <span class="close" id="closeModal">&times;</span>
+      <span class="close" id="closeModal">×</span>
       <iframe id="videoFrame" src="" frameborder="0" allowfullscreen></iframe>
     </div>
   </div>
@@ -79,24 +198,21 @@
       img.addEventListener('click', () => {
         const videoId = img.getAttribute('data-video');
         videoFrame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-        modal.style.display = 'flex';
+        modal.classList.add('show'); /* Use the 'show' class to fade in */
       });
     });
 
     closeModal.addEventListener('click', () => {
-      modal.style.display = 'none';
+      modal.classList.remove('show'); /* Remove the 'show' class to fade out */
       videoFrame.src = '';
     });
 
     window.addEventListener('click', (e) => {
       if (e.target === modal) {
-        modal.style.display = 'none';
+        modal.classList.remove('show'); /* Remove the 'show' class to fade out */
         videoFrame.src = '';
       }
     });
   </script>
 </body>
 </html>
-
-
-
