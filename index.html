@@ -3,220 +3,292 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BeastBalak - Netflix Style Showcase</title>
-  <link rel="icon" href="https://yt3.googleusercontent.com/J7wynSpzjFkN2YpAiFWTCw14qdDhHyrl6hWqSA7jGelqVAAmj8mLyQaAyI9racPE14zr0KQAd9I=s160-c-k-c0x00ffffff-no-rj" type="image/png">
+  <title>BeastBalak | Stream</title>
+  
+  <link rel="icon" href="https://googleusercontent.com/profile/picture/1">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+
   <style>
-    /* Premium Animations */
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    /* --- INTERNAL CSS (No Dependencies) --- */
+    :root {
+      --bg-color: #0a0a0a;
+      --text-main: #ffffff;
+      --accent: #E50914; /* Netflix Red */
+      --font-art: 'Syne', sans-serif;
+      --font-ui: 'Inter', sans-serif;
     }
 
-    @keyframes slideDown {
-      from { transform: translateY(-50px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      margin: 0;
-      background: #141414;
-      color: white;
-      font-family: Arial, sans-serif;
-      animation: fadeIn 1s ease-in-out;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: var(--font-ui);
+      overflow-x: hidden;
     }
 
+    /* Background Noise */
+    .noise {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 99;
+      background: url('https://grainy-gradients.vercel.app/noise.svg');
+      opacity: 0.06;
+    }
+
+    /* Header */
     header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-      background: #000;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      animation: slideDown 0.5s ease-out;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 40px;
+      position: fixed; top: 0; width: 100%;
+      z-index: 1000;
+      background: linear-gradient(to bottom, black, transparent);
+      transition: background 0.3s;
     }
+    
+    .logo { display: flex; align-items: center; gap: 15px; }
+    
+    /* Updated Logo Image */
+    .logo img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--accent); }
+    
+    .logo span { font-family: var(--font-art); font-weight: 800; font-size: 1.2rem; letter-spacing: 1px; text-transform: uppercase; }
 
-    .logo {
-      display: flex;
-      align-items: center;
-    }
-    .logo img {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      margin-right: 10px;
-      transition: transform 0.3s ease;
-    }
-    .logo img:hover {
-      transform: scale(1.05);
-    }
     nav a {
-      color: white;
-      margin: 0 10px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: color 0.3s ease;
+      color: #ccc; margin-left: 20px; text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: 0.3s;
     }
-    nav a:hover {
-      color: #e50914;
-    }
+    nav a:hover { color: var(--accent); }
 
-    /* Banner container now uses position: relative to layer content */
+    /* Banner (Hero) */
     .banner {
       position: relative;
-      width: 100%;
+      height: 80vh;
       display: flex;
       align-items: flex-end;
-    }
-    /* The banner image now fills the banner container */
-    .banner img {
-        width: 100%;
-        height: auto; /* This makes the height adjust to the image's aspect ratio */
-        display: block;
-        animation: fadeIn 1.5s ease-in-out;
+      padding: 0 0 80px 40px;
     }
 
-    /* Positioning the title on top of the image */
-    .banner h1 {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      font-size: 3rem;
-      margin: 0;
-      z-index: 50; /* Ensure the title is above the image */
-      animation: slideInLeft 1s ease-out;
-      text-shadow: 2px 2px 4px #000; /* Adds a shadow for better visibility */
-    }
-    @keyframes slideInLeft {
-      from { transform: translateX(-50px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
+    .banner-img {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      object-fit: cover;
+      mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+      z-index: -1;
+      opacity: 0.6;
+      transition: opacity 0.5s;
     }
 
-    .row {
-      margin: 20px;
+    .banner-content { z-index: 10; max-width: 600px; }
+    
+    .banner-title {
+      font-family: var(--font-art);
+      font-size: 4rem;
+      line-height: 0.9;
+      font-weight: 800;
+      margin-bottom: 20px;
+      text-shadow: 0 10px 30px rgba(0,0,0,0.8);
     }
-    .row h2 {
-      margin-bottom: 10px;
+
+    .banner-desc {
+      font-size: 1.1rem; color: #ddd; margin-bottom: 30px;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
     }
+
+    .btn {
+      padding: 12px 30px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 4px;
+      display: inline-flex; align-items: center; gap: 10px;
+      transition: transform 0.2s;
+      text-decoration: none;
+    }
+    .btn:hover { transform: scale(1.05); }
+
+    /* Rows */
+    .row { padding: 20px 40px; margin-bottom: 40px; position: relative; z-index: 100; }
+    .row h2 { font-family: var(--font-art); margin-bottom: 20px; font-size: 1.5rem; color: #e5e5e5; }
+
     .row-posters {
       display: flex;
-      overflow-x: auto;
-      gap: 10px;
-      padding-bottom: 10px;
+      gap: 15px;
+      overflow-y: hidden;
+      overflow-x: scroll;
+      padding: 20px 0;
     }
-    .row-posters::-webkit-scrollbar {
-      display: none;
-    }
-    .row-posters img {
-      max-height: 160px;
-      object-fit: cover;
+    .row-posters::-webkit-scrollbar { display: none; }
+
+    .poster-card {
+      flex: 0 0 auto;
+      width: 280px;
+      transition: transform 0.3s;
       cursor: pointer;
-      transition: transform 0.3s ease-in-out;
+    }
+    .poster-card img {
+      width: 100%;
       border-radius: 4px;
+      aspect-ratio: 16/9;
+      object-fit: cover;
     }
-    .row-posters img:hover {
-      transform: scale(1.1);
-    }
+    .poster-card:hover { transform: scale(1.08); z-index: 10; }
+    .poster-info { margin-top: 10px; font-size: 0.9rem; color: #ccc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     /* Modal */
     .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.9);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      transition: opacity 0.5s ease-in-out;
-      opacity: 0;
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.95); z-index: 2000;
+      justify-content: center; align-items: center;
+      opacity: 0; transition: opacity 0.3s;
     }
-    .modal.show {
-      display: flex;
-      opacity: 1;
+    .modal.show { display: flex; opacity: 1; }
+    
+    .modal-content { width: 90%; max-width: 1000px; position: relative; aspect-ratio: 16/9; }
+    .modal-content iframe { width: 100%; height: 100%; border-radius: 10px; box-shadow: 0 0 50px rgba(229, 9, 20, 0.2); }
+    
+    .close-btn {
+      position: absolute; top: -50px; right: 0; color: white; font-size: 2rem; cursor: pointer; font-family: var(--font-art);
     }
 
-    .modal-content {
-      position: relative;
-      width: 80%;
-      max-width: 800px;
+    /* Loading State */
+    .loading { text-align: center; padding: 50px; color: #555; font-family: var(--font-art); }
+
+    @media (max-width: 768px) {
+      .banner-title { font-size: 2.5rem; }
+      .row { padding: 20px; }
+      header { padding: 15px 20px; }
     }
-    .modal-content iframe {
-      width: 100%;
-      height: 450px;
-    }
-    .close {
-      position: absolute;
-      top: -40px;
-      right: 0;
-      font-size: 2rem;
-      cursor: pointer;
-    }
-    
-    /* The media query is no longer needed since the height is dynamic */
   </style>
 </head>
 <body>
+
+  <div class="noise"></div>
+
   <header>
     <div class="logo">
-      <img src="https://yt3.googleusercontent.com/J7wynSpzjFkN2YpAiFWTCw14qdDhHyrl6hWqSA7jGelqVAAmj8mLyQaAyI9racPE14zr0KQAd9I=s160-c-k-c0x00ffffff-no-rj" alt="BeastBalak Logo">
+      <img src="https://googleusercontent.com/profile/picture/1" alt="Logo">
       <span>BeastBalak</span>
     </div>
     <nav>
-      <a href="https://www.youtube.com/@beastbalak" target="_blank">Channel</a>
-      <a href="https://www.youtube.com/@beastbalak/videos" target="_blank">Videos</a>
+      <a href="https://www.youtube.com/@beastbalak" target="_blank">YouTube</a>
+      <a href="mailto:beastgamerxjay@gmail.com">Contact</a>
     </nav>
   </header>
 
-  <section class="banner">
-    <img src="https://img.youtube.com/vi/GTunYAY52Lw/maxresdefault.jpg" alt="BeastBalak Banner" />
-    <h1>BeastBalak</h1>
+  <section class="banner" id="mainBanner">
+    <img src="" alt="" class="banner-img" id="bannerImg">
+    <div class="banner-content">
+      <h1 class="banner-title" id="bannerTitle">Loading...</h1>
+      <p class="banner-desc" id="bannerDesc">Fetching latest content from the mainframe.</p>
+      <button class="btn" id="bannerBtn">▶ Play Latest</button>
+    </div>
   </section>
 
   <div class="row">
-    <h2>Latest Uploads</h2>
-    <div class="row-posters">
-      <img src="https://img.youtube.com/vi/GTunYAY52Lw/hqdefault.jpg" data-video="GTunYAY52Lw" alt="">
-      <img src="https://img.youtube.com/vi/RDGhEXpmVgk/hqdefault.jpg" data-video="RDGhEXpmVgk" alt="">
-      <img src="https://img.youtube.com/vi/2vnaxQhUXi8/hqdefault.jpg" data-video="2vnaxQhUXi8" alt="">
+    <h2>Recent Uploads</h2>
+    <div class="row-posters" id="videoRow">
+      <div class="loading">Syncing with YouTube...</div>
     </div>
   </div>
 
   <div class="modal" id="videoModal">
     <div class="modal-content">
-      <span class="close" id="closeModal">×</span>
-      <iframe id="videoFrame" src="" frameborder="0" allowfullscreen></iframe>
+      <div class="close-btn" id="closeModal">CLOSE [X]</div>
+      <iframe id="videoFrame" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
   </div>
 
   <script>
-    // Modal logic
-    const modal = document.getElementById('videoModal');
-    const videoFrame = document.getElementById('videoFrame');
-    const closeModal = document.getElementById('closeModal');
+    // --- CONFIGURATION ---
+    const CHANNEL_ID = 'UCAFHVvPgnKSACSGRjLQrecg'; 
+    
+    // --- LOGIC ---
+    const RSS_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
+    const API_ENDPOINT = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}`;
 
-    document.querySelectorAll('.row-posters img').forEach(img => {
-      img.addEventListener('click', () => {
-        const videoId = img.getAttribute('data-video');
-        videoFrame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-        modal.classList.add('show');
-      });
-    });
+    async function fetchVideos() {
+      try {
+        const response = await fetch(API_ENDPOINT);
+        const data = await response.json();
 
-    closeModal.addEventListener('click', () => {
-      modal.classList.remove('show');
-      videoFrame.src = '';
-    });
-
-    window.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.classList.remove('show');
-        videoFrame.src = '';
+        if (data.status === 'ok') {
+          updateUI(data.items);
+        } else {
+          console.error('Error fetching feed');
+          document.getElementById('bannerTitle').innerText = "Stream Offline";
+        }
+      } catch (error) {
+        console.error('Network Error', error);
       }
+    }
+
+    function updateUI(videos) {
+      if (!videos || videos.length === 0) return;
+
+      // 1. Set Banner (Latest Video)
+      const latest = videos[0];
+      // Attempt to get max res, fallback to standard
+      const bannerImg = latest.thumbnail.replace('hqdefault', 'maxresdefault'); 
+      const videoId = latest.link.split('v=')[1];
+      
+      document.getElementById('bannerImg').src = bannerImg;
+      document.getElementById('bannerTitle').innerText = latest.title;
+      document.getElementById('bannerDesc').innerText = "New Release • Watch Now";
+      
+      const bannerBtn = document.getElementById('bannerBtn');
+      bannerBtn.onclick = (e) => {
+        e.preventDefault(); 
+        openModal(videoId);
+      };
+
+      // 2. Populate Row (Rest of videos)
+      const rowContainer = document.getElementById('videoRow');
+      rowContainer.innerHTML = ''; 
+
+      videos.forEach((video) => {
+        const vId = video.link.split('v=')[1];
+        const card = document.createElement('div');
+        card.className = 'poster-card';
+        
+        card.innerHTML = `
+          <img src="${video.thumbnail}" alt="${video.title}">
+          <div class="poster-info">${video.title}</div>
+        `;
+        
+        card.addEventListener('click', () => openModal(vId));
+        rowContainer.appendChild(card);
+      });
+    }
+
+    // --- MODAL LOGIC ---
+    const modal = document.getElementById('videoModal');
+    const frame = document.getElementById('videoFrame');
+    const closeBtn = document.getElementById('closeModal');
+
+    function openModal(videoId) {
+      frame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+      modal.classList.add('show');
+    }
+
+    function closeModalFunc() {
+      modal.classList.remove('show');
+      setTimeout(() => { frame.src = ''; }, 300); 
+    }
+
+    closeBtn.addEventListener('click', closeModalFunc);
+    
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) closeModalFunc();
     });
+
+    // Initialize
+    fetchVideos();
+
   </script>
 </body>
 </html>
