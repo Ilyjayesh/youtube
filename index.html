@@ -12,11 +12,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
 
   <style>
-    /* --- INTERNAL CSS (No Dependencies) --- */
+    /* --- CINEMATIC THEME CSS --- */
     :root {
-      --bg-color: #0a0a0a;
+      --bg-color: #050505;
       --text-main: #ffffff;
       --accent: #E50914; /* Netflix Red */
+      --glass-nav: rgba(0, 0, 0, 0.7);
       --font-art: 'Syne', sans-serif;
       --font-ui: 'Inter', sans-serif;
     }
@@ -30,114 +31,156 @@
       overflow-x: hidden;
     }
 
-    /* Background Noise */
-    .noise {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: none; z-index: 99;
-      background: url('https://grainy-gradients.vercel.app/noise.svg');
-      opacity: 0.06;
-    }
-
-    /* Header */
+    /* Header - Glass Effect */
     header {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 20px 40px;
+      padding: 20px 50px;
       position: fixed; top: 0; width: 100%;
       z-index: 1000;
-      background: linear-gradient(to bottom, black, transparent);
-      transition: background 0.3s;
+      background: var(--glass-nav);
+      backdrop-filter: blur(12px); /* Frosted Glass */
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
     }
     
     .logo { display: flex; align-items: center; gap: 15px; }
     
-    /* Updated Logo Image */
-    .logo img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--accent); }
+    /* FIXED: Logo Styling to hide 'alt' text issues */
+    .logo img { 
+      width: 45px; height: 45px; 
+      border-radius: 50%; 
+      border: 2px solid rgba(255,255,255,0.2); 
+      object-fit: cover; 
+      background: #111; /* Fallback if image is slow */
+    }
     
-    .logo span { font-family: var(--font-art); font-weight: 800; font-size: 1.2rem; letter-spacing: 1px; text-transform: uppercase; }
+    .logo span { 
+      font-family: var(--font-art); 
+      font-weight: 800; 
+      font-size: 1.4rem; 
+      letter-spacing: -1px; 
+      background: linear-gradient(to right, #fff, #aaa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
     nav a {
-      color: #ccc; margin-left: 20px; text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: 0.3s;
+      color: #ccc; margin-left: 30px; 
+      text-decoration: none; 
+      font-size: 0.95rem; 
+      font-weight: 500; 
+      position: relative;
+      transition: 0.3s;
     }
-    nav a:hover { color: var(--accent); }
+    nav a:hover { color: white; }
+    /* Underline hover animation */
+    nav a::after {
+      content: ''; position: absolute; width: 0; height: 2px; 
+      bottom: -5px; left: 0; background: var(--accent); 
+      transition: width 0.3s;
+    }
+    nav a:hover::after { width: 100%; }
 
-    /* Banner (Hero) */
+    /* Hero Banner - Cinematic Vignette */
     .banner {
       position: relative;
-      height: 80vh;
+      height: 85vh;
       display: flex;
       align-items: flex-end;
-      padding: 0 0 80px 40px;
+      padding: 0 0 100px 50px;
     }
 
     .banner-img {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%;
       object-fit: cover;
-      mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-      -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+      /* This creates the seamless fade into black */
+      mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
       z-index: -1;
-      opacity: 0.6;
-      transition: opacity 0.5s;
+      opacity: 0.7;
+      transform: scale(1.01); /* Slight zoom to avoid edges */
     }
 
-    .banner-content { z-index: 10; max-width: 600px; }
+    .banner-content { z-index: 10; max-width: 700px; animation: fadeUp 1s ease-out; }
     
     .banner-title {
       font-family: var(--font-art);
-      font-size: 4rem;
+      font-size: 5rem;
       line-height: 0.9;
       font-weight: 800;
       margin-bottom: 20px;
-      text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      text-shadow: 0 20px 40px rgba(0,0,0,0.8);
     }
 
     .banner-desc {
-      font-size: 1.1rem; color: #ddd; margin-bottom: 30px;
-      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+      font-size: 1.2rem; color: #ccc; margin-bottom: 30px;
+      text-shadow: 0 2px 4px rgba(0,0,0,1);
+      max-width: 500px;
     }
 
     .btn {
-      padding: 12px 30px;
-      background: var(--accent);
+      padding: 14px 35px;
+      background: linear-gradient(135deg, #E50914, #B20710);
       color: white;
       border: none;
-      font-weight: bold;
-      font-size: 1rem;
+      font-weight: 700;
+      font-size: 1.1rem;
       cursor: pointer;
       border-radius: 4px;
       display: inline-flex; align-items: center; gap: 10px;
-      transition: transform 0.2s;
-      text-decoration: none;
+      box-shadow: 0 10px 20px rgba(229, 9, 20, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
     }
-    .btn:hover { transform: scale(1.05); }
+    .btn:hover { transform: scale(1.05); box-shadow: 0 15px 30px rgba(229, 9, 20, 0.5); }
 
-    /* Rows */
-    .row { padding: 20px 40px; margin-bottom: 40px; position: relative; z-index: 100; }
-    .row h2 { font-family: var(--font-art); margin-bottom: 20px; font-size: 1.5rem; color: #e5e5e5; }
+    /* Video Grid */
+    .row { padding: 20px 50px; margin-bottom: 60px; position: relative; z-index: 10; }
+    .row h2 { font-family: var(--font-art); margin-bottom: 25px; font-size: 1.8rem; color: #fff; }
 
     .row-posters {
       display: flex;
-      gap: 15px;
+      gap: 20px;
       overflow-y: hidden;
-      overflow-x: scroll;
-      padding: 20px 0;
+      overflow-x: auto;
+      padding: 20px 0 40px 0; /* Extra bottom padding for hover effects */
+      scrollbar-width: none; /* Firefox */
     }
     .row-posters::-webkit-scrollbar { display: none; }
 
     .poster-card {
       flex: 0 0 auto;
-      width: 280px;
-      transition: transform 0.3s;
+      width: 300px;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       cursor: pointer;
+      position: relative;
     }
+    
     .poster-card img {
       width: 100%;
-      border-radius: 4px;
+      border-radius: 8px;
       aspect-ratio: 16/9;
       object-fit: cover;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
-    .poster-card:hover { transform: scale(1.08); z-index: 10; }
-    .poster-info { margin-top: 10px; font-size: 0.9rem; color: #ccc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* Glow effect on hover */
+    .poster-card:hover { transform: scale(1.1); z-index: 100; }
+    .poster-card:hover img {
+      box-shadow: 0 0 20px rgba(229, 9, 20, 0.6); /* Red Glow */
+    }
+
+    .poster-info {
+      margin-top: 15px;
+      font-size: 0.95rem;
+      color: #ddd;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+    .poster-card:hover .poster-info { opacity: 1; color: white; }
 
     /* Modal */
     .modal {
@@ -147,52 +190,53 @@
       opacity: 0; transition: opacity 0.3s;
     }
     .modal.show { display: flex; opacity: 1; }
-    
-    .modal-content { width: 90%; max-width: 1000px; position: relative; aspect-ratio: 16/9; }
-    .modal-content iframe { width: 100%; height: 100%; border-radius: 10px; box-shadow: 0 0 50px rgba(229, 9, 20, 0.2); }
+    .modal-content { width: 90%; max-width: 1100px; position: relative; aspect-ratio: 16/9; }
+    .modal-content iframe { width: 100%; height: 100%; border-radius: 12px; box-shadow: 0 0 60px rgba(229, 9, 20, 0.3); }
     
     .close-btn {
-      position: absolute; top: -50px; right: 0; color: white; font-size: 2rem; cursor: pointer; font-family: var(--font-art);
+      position: absolute; top: -40px; right: 0; color: white; font-size: 1.2rem; cursor: pointer; font-family: var(--font-art); letter-spacing: 2px; opacity: 0.7;
     }
+    .close-btn:hover { opacity: 1; }
 
-    /* Loading State */
-    .loading { text-align: center; padding: 50px; color: #555; font-family: var(--font-art); }
+    .loading { text-align: center; width: 100%; color: #555; font-family: var(--font-art); padding: 50px; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
     @media (max-width: 768px) {
+      header { padding: 15px 20px; }
+      .banner { height: 60vh; padding-left: 20px; padding-bottom: 60px; }
       .banner-title { font-size: 2.5rem; }
       .row { padding: 20px; }
-      header { padding: 15px 20px; }
+      .poster-card { width: 240px; }
     }
   </style>
 </head>
 <body>
 
-  <div class="noise"></div>
-
   <header>
     <div class="logo">
-      <img src="https://googleusercontent.com/profile/picture/1" alt="Logo">
+      <img src="https://googleusercontent.com/profile/picture/1" alt="">
       <span>BeastBalak</span>
     </div>
     <nav>
       <a href="https://www.youtube.com/@beastbalak" target="_blank">YouTube</a>
-      <a href="mailto:beastgamerxjay@gmail.com">Contact</a>
+      <a href="https://ilyjayesh.github.io/main/contact.html">Contact</a>
     </nav>
   </header>
 
   <section class="banner" id="mainBanner">
     <img src="" alt="" class="banner-img" id="bannerImg">
     <div class="banner-content">
-      <h1 class="banner-title" id="bannerTitle">Loading...</h1>
-      <p class="banner-desc" id="bannerDesc">Fetching latest content from the mainframe.</p>
+      <h1 class="banner-title" id="bannerTitle">Loading Stream...</h1>
+      <p class="banner-desc" id="bannerDesc">Fetching the latest visuals from the archive.</p>
       <button class="btn" id="bannerBtn">▶ Play Latest</button>
     </div>
   </section>
 
   <div class="row">
-    <h2>Recent Uploads</h2>
+    <h2>Trending Uploads</h2>
     <div class="row-posters" id="videoRow">
-      <div class="loading">Syncing with YouTube...</div>
+      <div class="loading">Loading...</div>
     </div>
   </div>
 
@@ -220,7 +264,7 @@
           updateUI(data.items);
         } else {
           console.error('Error fetching feed');
-          document.getElementById('bannerTitle').innerText = "Stream Offline";
+          document.getElementById('bannerTitle').innerText = "Currently Offline";
         }
       } catch (error) {
         console.error('Network Error', error);
@@ -238,7 +282,7 @@
       
       document.getElementById('bannerImg').src = bannerImg;
       document.getElementById('bannerTitle').innerText = latest.title;
-      document.getElementById('bannerDesc').innerText = "New Release • Watch Now";
+      document.getElementById('bannerDesc').innerText = "New Release • Official Video";
       
       const bannerBtn = document.getElementById('bannerBtn');
       bannerBtn.onclick = (e) => {
