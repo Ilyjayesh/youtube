@@ -1,340 +1,312 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BeastBalak | Stream</title>
-  
-  <link rel="icon" href="https://yt3.googleusercontent.com/rET6oq0t3S2P7F1cCojls3iRnKDpomzF-qzAgm6bEUQ_EhbHMlWQ8eCWOv5DjED3EpQ22o_vrA4=s160-c-k-c0x00ffffff-no-rj">
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
-
-  <style>
-    /* --- CINEMATIC THEME CSS --- */
-    :root {
-      --bg-color: #050505;
-      --text-main: #ffffff;
-      --accent: #E50914; /* Netflix Red */
-      --glass-nav: rgba(0, 0, 0, 0.7);
-      --font-art: 'Syne', sans-serif;
-      --font-ui: 'Inter', sans-serif;
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      font-family: var(--font-ui);
-      overflow-x: hidden;
-    }
-
-    /* Header - Glass Effect */
-    header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 20px 50px;
-      position: fixed; top: 0; width: 100%;
-      z-index: 1000;
-      background: var(--glass-nav);
-      backdrop-filter: blur(12px); /* Frosted Glass */
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-    
-    .logo { display: flex; align-items: center; gap: 15px; }
-    
-    /* FIXED: Logo Styling to hide 'alt' text issues */
-    .logo img { 
-      width: 45px; height: 45px; 
-      border-radius: 50%; 
-      border: 2px solid rgba(255,255,255,0.2); 
-      object-fit: cover; 
-      background: #111; /* Fallback if image is slow */
-    }
-    
-    .logo span { 
-      font-family: var(--font-art); 
-      font-weight: 800; 
-      font-size: 1.4rem; 
-      letter-spacing: -1px; 
-      background: linear-gradient(to right, #fff, #aaa);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    nav a {
-      color: #ccc; margin-left: 30px; 
-      text-decoration: none; 
-      font-size: 0.95rem; 
-      font-weight: 500; 
-      position: relative;
-      transition: 0.3s;
-    }
-    nav a:hover { color: white; }
-    /* Underline hover animation */
-    nav a::after {
-      content: ''; position: absolute; width: 0; height: 2px; 
-      bottom: -5px; left: 0; background: var(--accent); 
-      transition: width 0.3s;
-    }
-    nav a:hover::after { width: 100%; }
-
-    /* Hero Banner - Cinematic Vignette */
-    .banner {
-      position: relative;
-      height: 85vh;
-      display: flex;
-      align-items: flex-end;
-      padding: 0 0 100px 50px;
-    }
-
-    .banner-img {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      object-fit: cover;
-      /* This creates the seamless fade into black */
-      mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-      -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-      z-index: -1;
-      opacity: 0.7;
-      transform: scale(1.01); /* Slight zoom to avoid edges */
-    }
-
-    .banner-content { z-index: 10; max-width: 700px; animation: fadeUp 1s ease-out; }
-    
-    .banner-title {
-      font-family: var(--font-art);
-      font-size: 5rem;
-      line-height: 0.9;
-      font-weight: 800;
-      margin-bottom: 20px;
-      text-shadow: 0 20px 40px rgba(0,0,0,0.8);
-    }
-
-    .banner-desc {
-      font-size: 1.2rem; color: #ccc; margin-bottom: 30px;
-      text-shadow: 0 2px 4px rgba(0,0,0,1);
-      max-width: 500px;
-    }
-
-    .btn {
-      padding: 14px 35px;
-      background: linear-gradient(135deg, #E50914, #B20710);
-      color: white;
-      border: none;
-      font-weight: 700;
-      font-size: 1.1rem;
-      cursor: pointer;
-      border-radius: 4px;
-      display: inline-flex; align-items: center; gap: 10px;
-      box-shadow: 0 10px 20px rgba(229, 9, 20, 0.3);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .btn:hover { transform: scale(1.05); box-shadow: 0 15px 30px rgba(229, 9, 20, 0.5); }
-
-    /* Video Grid */
-    .row { padding: 20px 50px; margin-bottom: 60px; position: relative; z-index: 10; }
-    .row h2 { font-family: var(--font-art); margin-bottom: 25px; font-size: 1.8rem; color: #fff; }
-
-    .row-posters {
-      display: flex;
-      gap: 20px;
-      overflow-y: hidden;
-      overflow-x: auto;
-      padding: 20px 0 40px 0; /* Extra bottom padding for hover effects */
-      scrollbar-width: none; /* Firefox */
-    }
-    .row-posters::-webkit-scrollbar { display: none; }
-
-    .poster-card {
-      flex: 0 0 auto;
-      width: 300px;
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      cursor: pointer;
-      position: relative;
-    }
-    
-    .poster-card img {
-      width: 100%;
-      border-radius: 8px;
-      aspect-ratio: 16/9;
-      object-fit: cover;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    }
-
-    /* Glow effect on hover */
-    .poster-card:hover { transform: scale(1.1); z-index: 100; }
-    .poster-card:hover img {
-      box-shadow: 0 0 20px rgba(229, 9, 20, 0.6); /* Red Glow */
-    }
-
-    .poster-info {
-      margin-top: 15px;
-      font-size: 0.95rem;
-      color: #ddd;
-      font-weight: 500;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      opacity: 0.7;
-      transition: opacity 0.3s;
-    }
-    .poster-card:hover .poster-info { opacity: 1; color: white; }
-
-    /* Modal */
-    .modal {
-      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.95); z-index: 2000;
-      justify-content: center; align-items: center;
-      opacity: 0; transition: opacity 0.3s;
-    }
-    .modal.show { display: flex; opacity: 1; }
-    .modal-content { width: 90%; max-width: 1100px; position: relative; aspect-ratio: 16/9; }
-    .modal-content iframe { width: 100%; height: 100%; border-radius: 12px; box-shadow: 0 0 60px rgba(229, 9, 20, 0.3); }
-    
-    .close-btn {
-      position: absolute; top: -40px; right: 0; color: white; font-size: 1.2rem; cursor: pointer; font-family: var(--font-art); letter-spacing: 2px; opacity: 0.7;
-    }
-    .close-btn:hover { opacity: 1; }
-
-    .loading { text-align: center; width: 100%; color: #555; font-family: var(--font-art); padding: 50px; }
-
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-    @media (max-width: 768px) {
-      header { padding: 15px 20px; }
-      .banner { height: 60vh; padding-left: 20px; padding-bottom: 60px; }
-      .banner-title { font-size: 2.5rem; }
-      .row { padding: 20px; }
-      .poster-card { width: 240px; }
-    }
-  </style>
-</head>
-<body>
-
-  <header>
-    <div class="logo">
-      <img src="https://yt3.googleusercontent.com/rET6oq0t3S2P7F1cCojls3iRnKDpomzF-qzAgm6bEUQ_EhbHMlWQ8eCWOv5DjED3EpQ22o_vrA4=s160-c-k-c0x00ffffff-no-rj" alt="">
-      <span>BeastBalak</span>
-    </div>
-    <nav>
-      <a href="https://www.youtube.com/@beastbalak" target="_blank">YouTube</a>
-      <a href="https://ilyjayesh.github.io/main/contact.html">Contact</a>
-    </nav>
-  </header>
-
-  <section class="banner" id="mainBanner">
-    <img src="" alt="" class="banner-img" id="bannerImg">
-    <div class="banner-content">
-      <h1 class="banner-title" id="bannerTitle">Loading Stream...</h1>
-      <p class="banner-desc" id="bannerDesc">Fetching the latest visuals from the archive.</p>
-      <button class="btn" id="bannerBtn">▶ Play Latest</button>
-    </div>
-  </section>
-
-  <div class="row">
-    <h2>Recent Uploads</h2>
-    <div class="row-posters" id="videoRow">
-      <div class="loading">Loading...</div>
-    </div>
-  </div>
-
-  <div class="modal" id="videoModal">
-    <div class="modal-content">
-      <div class="close-btn" id="closeModal">CLOSE [X]</div>
-      <iframe id="videoFrame" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    </div>
-  </div>
-
-  <script>
-    // --- CONFIGURATION ---
-    const CHANNEL_ID = 'UCAFHVvPgnKSACSGRjLQrecg'; 
-    
-    // --- LOGIC ---
-    const RSS_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
-    const API_ENDPOINT = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}`;
-
-    async function fetchVideos() {
-      try {
-        const response = await fetch(API_ENDPOINT);
-        const data = await response.json();
-
-        if (data.status === 'ok') {
-          updateUI(data.items);
-        } else {
-          console.error('Error fetching feed');
-          document.getElementById('bannerTitle').innerText = "Currently Offline";
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyScroll - ACCA BT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #000; color: #d9d9d9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        .tweet-border { border-bottom: 1px solid #2f3336; border-left: 1px solid #2f3336; border-right: 1px solid #2f3336; }
+        .sidebar-icon { transition: background-color 0.2s; }
+        .sidebar-icon:hover { background-color: rgba(239, 243, 244, 0.1); border-radius: 9999px; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .action-btn:hover { background-color: rgba(0, 186, 124, 0.1); color: #00ba7c; }
+        .like-btn:hover { background-color: rgba(249, 24, 128, 0.1); color: #f91880; }
+        
+        /* Animation for the refresh pill */
+        @keyframes slideDown {
+            from { transform: translate(-50%, -150%); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
         }
-      } catch (error) {
-        console.error('Network Error', error);
-      }
-    }
+        .animate-slide-down {
+            animation: slideDown 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="flex justify-center h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <div class="w-20 xl:w-64 flex flex-col justify-between h-full py-4 px-2 xl:px-6">
+        <div class="flex flex-col gap-4">
+            <div class="p-3 w-fit text-2xl font-bold text-white">📖</div>
+            <div class="flex items-center gap-4 p-3 sidebar-icon cursor-pointer w-fit">
+                <span class="text-xl">🏠</span>
+                <span class="hidden xl:inline text-xl font-semibold">Home Feed</span>
+            </div>
+            <div class="flex items-center gap-4 p-3 sidebar-icon cursor-pointer w-fit">
+                <span class="text-xl">✅</span>
+                <span class="hidden xl:inline text-xl">Mastered</span>
+            </div>
+            <div class="flex items-center gap-4 p-3 sidebar-icon cursor-pointer w-fit" onclick="alert('Instructions: Convert your Excel to JSON (using a free online tool) and paste it into the myNotes array in the HTML file source code.')">
+                <span class="text-xl">📊</span>
+                <span class="hidden xl:inline text-xl">Import Data</span>
+            </div>
+            <button class="mt-4 bg-[#1d9bf0] hover:bg-[#1a8cd8] text-white font-bold py-3 px-8 rounded-full hidden xl:block transition duration-200">
+                Post Note
+            </button>
+        </div>
+        <div class="flex items-center gap-3 p-3 sidebar-icon cursor-pointer w-fit mt-auto">
+            <div class="w-10 h-10 bg-[#d4af37] rounded-full flex items-center justify-center text-black font-bold">JS</div>
+            <div class="hidden xl:block text-sm">
+                <div class="font-bold text-white">Jayesh Sharma</div>
+                <div class="text-gray-500">@jayesh_acca</div>
+            </div>
+        </div>
+    </div>
 
-    function updateUI(videos) {
-      if (!videos || videos.length === 0) return;
-
-      // 1. Set Banner (Latest Video)
-      const latest = videos[0];
-      // Attempt to get max res, fallback to standard
-      const bannerImg = latest.thumbnail.replace('hqdefault', 'maxresdefault'); 
-      const videoId = latest.link.split('v=')[1];
-      
-      document.getElementById('bannerImg').src = bannerImg;
-      document.getElementById('bannerTitle').innerText = latest.title;
-      document.getElementById('bannerDesc').innerText = "New Release • Official Video";
-      
-      const bannerBtn = document.getElementById('bannerBtn');
-      bannerBtn.onclick = (e) => {
-        e.preventDefault(); 
-        openModal(videoId);
-      };
-
-      // 2. Populate Row (Rest of videos)
-      const rowContainer = document.getElementById('videoRow');
-      rowContainer.innerHTML = ''; 
-
-      videos.forEach((video) => {
-        const vId = video.link.split('v=')[1];
-        const card = document.createElement('div');
-        card.className = 'poster-card';
+    <!-- Main Feed -->
+    <div class="w-full max-w-[600px] h-full overflow-y-scroll hide-scrollbar border-x border-[#2f3336] flex flex-col relative" id="feed-container">
+        <!-- Header -->
+        <div class="sticky top-0 z-30 bg-black/80 backdrop-blur-md border-b border-[#2f3336] p-4 cursor-pointer" onclick="scrollToTop()">
+            <h1 class="text-xl font-bold text-white">ACCA Business & Technology</h1>
+        </div>
         
-        card.innerHTML = `
-          <img src="${video.thumbnail}" alt="${video.title}">
-          <div class="poster-info">${video.title}</div>
-        `;
+        <!-- Refresh Pill (Hidden by default) -->
+        <div id="refresh-pill" class="hidden absolute top-16 left-1/2 transform -translate-x-1/2 bg-[#1d9bf0] text-white px-4 py-2 rounded-full cursor-pointer z-20 shadow-md hover:bg-[#1a8cd8] transition text-sm font-bold" onclick="refreshFeed()">
+            <span id="refresh-text">Post new notes</span>
+        </div>
         
-        card.addEventListener('click', () => openModal(vId));
-        rowContainer.appendChild(card);
-      });
-    }
+        <!-- Tweets Container -->
+        <div id="tweets"></div>
+        
+        <!-- Loading Spinner / Observer Target -->
+        <div id="loading" class="p-6 text-center text-[#1d9bf0]">
+            <svg class="animate-spin h-8 w-8 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+        </div>
+    </div>
 
-    // --- MODAL LOGIC ---
-    const modal = document.getElementById('videoModal');
-    const frame = document.getElementById('videoFrame');
-    const closeBtn = document.getElementById('closeModal');
+    <!-- Right Panel -->
+    <div class="hidden lg:block w-80 p-4 pl-8">
+        <div class="bg-[#16181c] rounded-2xl p-4 mb-4">
+            <h2 class="text-xl font-bold text-white mb-4">Study Stats</h2>
+            <div class="text-sm text-gray-400 mb-2">Mastered Today</div>
+            <div class="text-3xl font-bold text-white" id="mastered-count">0</div>
+        </div>
+        <div class="bg-[#16181c] rounded-2xl p-4">
+            <h2 class="text-xl font-bold text-white mb-4">Trending Topics</h2>
+            <div class="mb-4">
+                <div class="text-xs text-gray-500">Business & Tech</div>
+                <div class="font-bold text-white">Microeconomics</div>
+                <div class="text-xs text-gray-500">1,204 notes</div>
+            </div>
+            <div class="mb-4">
+                <div class="text-xs text-gray-500">Data Privacy</div>
+                <div class="font-bold text-white">Data Controller vs Subject</div>
+                <div class="text-xs text-gray-500">842 notes</div>
+            </div>
+            <div>
+                <div class="text-xs text-gray-500">Organisational Structure</div>
+                <div class="font-bold text-white">Span of Control</div>
+                <div class="text-xs text-gray-500">512 notes</div>
+            </div>
+        </div>
+    </div>
 
-    function openModal(videoId) {
-      frame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
-      modal.classList.add('show');
-    }
+    <script>
+        // Data populated from ACCA BT Notes
+        const myNotes = [
+            { id: 1, subject: "ACCA BT", topic: "Business Organisation", text: "A social arrangement to achieve collective goals through controlled performance.", mastered: false },
+            { id: 2, subject: "ACCA BT", topic: "Stakeholder", text: "An entity that can affect or be affected by an organisation.", mastered: false },
+            { id: 3, subject: "ACCA BT", topic: "Influence", text: "The ability to affect another entity's thinking, decisions, and actions.", mastered: false },
+            { id: 4, subject: "ACCA BT", topic: "Data subject", text: "Individuals whose data is processed.", mastered: false },
+            { id: 5, subject: "ACCA BT", topic: "Data user (controller)", text: "Entities that collect, store, and process personal data. Any entity or person that handles personal data.", mastered: false },
+            { id: 6, subject: "ACCA BT", topic: "Macroeconomics", text: "Study of the economy as a whole.", mastered: false },
+            { id: 7, subject: "ACCA BT", topic: "Inflation", text: "An increase in prices for goods and services over time.", mastered: false },
+            { id: 8, subject: "ACCA BT", topic: "Globalisation", text: "The promotion of the free flow of trade between countries without restrictions.", mastered: false },
+            { id: 9, subject: "ACCA BT", topic: "Microeconomics", text: "Study the economic decisions at the individual, firm, or industry level, and with particular markets, specific goods and services, and product and resource prices.", mastered: false },
+            { id: 10, subject: "ACCA BT", topic: "Equilibrium Price", text: "The price level at which quantity supplied and demanded are equal.", mastered: false },
+            { id: 11, subject: "ACCA BT", topic: "Economies of Scale", text: "State where the average cost per unit (AC) reduces with increasing output.", mastered: false },
+            { id: 12, subject: "ACCA BT", topic: "Monopoly", text: "A market structure for which there is a dominant single seller.", mastered: false },
+            { id: 13, subject: "ACCA BT", topic: "Formal Organisation", text: "Explicit structure of the organisation, including reporting lines, job positions, roles, scope, areas of responsibility, and formal communication channels.", mastered: false },
+            { id: 14, subject: "ACCA BT", topic: "Span of Control", text: "The number of subordinates directly reporting to an individual.", mastered: false },
+            { id: 15, subject: "ACCA BT", topic: "Marketing", text: "The management process which identifies, anticipates and satisfies customer needs efficiently and profitably.", mastered: false },
+            { id: 16, subject: "ACCA BT", topic: "Committee", text: "A group of individuals committed to achieving a purpose.", mastered: false }
+        ];
 
-    function closeModalFunc() {
-      modal.classList.remove('show');
-      setTimeout(() => { frame.src = ''; }, 300); 
-    }
+        // Fake users for randomized notes
+        const fakeUsers = [
+            { name: "Audit Ninja", handle: "audit_ninja", color: "from-red-500 to-orange-500", initials: "AN" },
+            { name: "Tax Master", handle: "tax_master", color: "from-green-400 to-cyan-500", initials: "TM" },
+            { name: "Finance Bro", handle: "finance_bro", color: "from-blue-500 to-indigo-600", initials: "FB" },
+            { name: "ACCA Guru", handle: "acca_guru", color: "from-purple-500 to-pink-500", initials: "AG" },
+            { name: "Study Bot", handle: "study_bot", color: "from-gray-700 to-gray-900", initials: "SB" },
+            { name: "Corporate Chad", handle: "corp_chad", color: "from-yellow-400 to-orange-500", initials: "CC" }
+        ];
 
-    closeBtn.addEventListener('click', closeModalFunc);
-    
-    window.addEventListener('click', (e) => {
-      if (e.target === modal) closeModalFunc();
-    });
+        const tweetsContainer = document.getElementById('tweets');
+        const loadingElement = document.getElementById('loading');
+        let masteredCount = 0;
 
-    // Initialize
-    fetchVideos();
+        function getRandomTime() {
+            const units = ['m', 'h', 'd'];
+            const unit = units[Math.floor(Math.random() * units.length)];
+            let value;
+            if (unit === 'm') value = Math.floor(Math.random() * 59) + 1;
+            if (unit === 'h') value = Math.floor(Math.random() * 23) + 1;
+            if (unit === 'd') value = Math.floor(Math.random() * 5) + 1;
+            return `${value}${unit}`;
+        }
 
-  </script>
+        function createTweetElement(note) {
+            const div = document.createElement('div');
+            div.className = "p-4 border-b border-[#2f3336] hover:bg-white/[0.03] transition duration-200";
+            
+            // Randomize user, time, and likes
+            const user = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
+            const timeAgo = getRandomTime();
+            const initialLikes = Math.floor(Math.random() * 800) + 12;
+
+            div.innerHTML = `
+                <div class="flex gap-4">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br ${user.color} flex-shrink-0 flex items-center justify-center text-white font-bold text-xs">
+                        ${user.initials}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-1 text-sm mb-1">
+                            <span class="font-bold text-white hover:underline cursor-pointer">${user.name}</span>
+                            <span class="text-gray-500">@${user.handle}</span>
+                            <span class="text-gray-500">·</span>
+                            <span class="text-gray-500 hover:underline cursor-pointer">${timeAgo}</span>
+                        </div>
+                        <div class="text-white text-[15px] mb-3 leading-normal font-medium">
+                            <span class="text-[#1d9bf0]">#${note.topic.replace(/\s+/g, '')}</span><br><br>
+                            ${note.text}
+                        </div>
+                        
+                        <div class="flex justify-between text-gray-500 max-w-sm pr-4">
+                            <!-- Like Button -->
+                            <div class="flex items-center gap-2 group cursor-pointer like-btn p-2 -ml-2 rounded-full transition" onclick="toggleLike(this, ${initialLikes})">
+                                <div class="p-2 rounded-full group-hover:bg-[#f91880]/10 transition-colors -m-2 mr-0">
+                                    <svg viewBox="0 0 24 24" class="w-5 h-5 fill-current transition-colors"><g><path d="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"></path></g></svg>
+                                </div>
+                                <span class="text-sm transition-colors like-count">${initialLikes}</span>
+                            </div>
+
+                            <!-- Mark Mastered Button -->
+                            <div class="flex items-center gap-2 group cursor-pointer action-btn p-2 rounded-full transition" onclick="markMastered(this)">
+                                <div class="p-2 rounded-full group-hover:bg-[#00ba7c]/10 transition-colors -m-2 mr-0">
+                                    <svg viewBox="0 0 24 24" class="w-5 h-5 fill-current"><g><path d="M12 3.75c-4.55 0-8.25 3.69-8.25 8.25s3.69 8.25 8.25 8.25 8.25-3.69 8.25-8.25S16.55 3.75 12 3.75zM1.75 12C1.75 6.34 6.34 1.75 12 1.75S22.25 6.34 22.25 12 22.25 22.25 12 22.25 1.75 22.25 1.75 12zM16.28 9.22c.29-.29.29-.77 0-1.06s-.77-.29-1.06 0l-4.47 4.47-2.22-2.22c-.29-.29-.77-.29-1.06 0s-.29.77 0 1.06l2.75 2.75c.15.15.34.22.53.22s.38-.07.53-.22l5-5z"></path></g></svg>
+                                </div>
+                                <span class="text-sm group-hover:text-[#00ba7c]">Mark Mastered</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            return div;
+        }
+
+        // Like Button Logic
+        window.toggleLike = function(element, baseCount) {
+            const svgPath = element.querySelector('svg path');
+            const span = element.querySelector('.like-count');
+            
+            // Check if already liked by looking for the filled heart path or a custom class
+            const isLiked = element.classList.contains('is-liked');
+            
+            if (isLiked) {
+                // Unlike
+                element.classList.remove('is-liked', 'text-[#f91880]');
+                svgPath.setAttribute('d', 'M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z'); // Empty heart
+                span.innerText = baseCount;
+            } else {
+                // Like
+                element.classList.add('is-liked', 'text-[#f91880]');
+                svgPath.setAttribute('d', 'M20.884 13.19c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z'); // Filled heart
+                span.innerText = baseCount + 1;
+                
+                // Add tiny pop animation
+                element.style.transform = "scale(1.1)";
+                setTimeout(() => { element.style.transform = "scale(1)"; }, 150);
+            }
+        }
+
+        // Mastered Logic
+        window.markMastered = function(element) {
+            const tweetDiv = element.closest('.p-4');
+            tweetDiv.style.opacity = '0.5';
+            element.innerHTML = '<span class="text-[#00ba7c] font-bold">Mastered!</span>';
+            element.style.pointerEvents = 'none';
+            
+            // Disable like button on mastered notes
+            const likeBtn = tweetDiv.querySelector('.like-btn');
+            if(likeBtn) likeBtn.style.pointerEvents = 'none';
+
+            masteredCount++;
+            document.getElementById('mastered-count').innerText = masteredCount;
+            
+            setTimeout(() => {
+                tweetDiv.style.display = 'none';
+            }, 1000);
+        }
+
+        // Load More Notes (Infinite Scroll)
+        function loadMoreNotes() {
+            setTimeout(() => {
+                const fragment = document.createDocumentFragment();
+                
+                // Always pull random notes for an infinite feed
+                for(let i=0; i<5; i++) {
+                    const randomNote = myNotes[Math.floor(Math.random() * myNotes.length)];
+                    fragment.appendChild(createTweetElement(randomNote));
+                }
+                
+                tweetsContainer.appendChild(fragment);
+            }, 800);
+        }
+
+        // Refresh Pill Logic
+        setInterval(() => {
+            const pill = document.getElementById('refresh-pill');
+            const numPosts = Math.floor(Math.random() * 5) + 2;
+            document.getElementById('refresh-text').innerText = `Post ${numPosts} new notes`;
+            pill.classList.remove('hidden');
+            pill.classList.add('animate-slide-down');
+        }, 30000); // Trigger every 30 seconds
+
+        window.refreshFeed = function() {
+            const pill = document.getElementById('refresh-pill');
+            pill.classList.add('hidden');
+            pill.classList.remove('animate-slide-down');
+            
+            // Scroll to top
+            document.getElementById('feed-container').scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Add a few new notes to the top
+            const fragment = document.createDocumentFragment();
+            for(let i=0; i<3; i++) {
+                const randomNote = myNotes[Math.floor(Math.random() * myNotes.length)];
+                fragment.appendChild(createTweetElement(randomNote));
+            }
+            tweetsContainer.prepend(fragment);
+        }
+
+        window.scrollToTop = function() {
+            document.getElementById('feed-container').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Intersection Observer for Infinite Scroll
+        const observerOptions = {
+            root: document.getElementById('feed-container'),
+            rootMargin: '0px',
+            threshold: 1.0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                loadMoreNotes();
+            }
+        }, observerOptions);
+
+        observer.observe(loadingElement);
+        
+        // Initial Load
+        loadMoreNotes();
+    </script>
 </body>
 </html>
-
-
