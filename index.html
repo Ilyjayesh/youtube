@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,73 +6,116 @@
     <title>StudyScroll - ACCA BT</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #000; color: #d9d9d9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-        .tweet-border { border-bottom: 1px solid #2f3336; border-left: 1px solid #2f3336; border-right: 1px solid #2f3336; }
-        .sidebar-icon { transition: background-color 0.2s; }
-        .sidebar-icon:hover { background-color: rgba(239, 243, 244, 0.1); border-radius: 9999px; }
+        body { background-color: #000; color: #e7e9ea; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        
+        /* Layout Borders */
+        .border-line { border-color: #2f3336; }
+        
+        /* Hover Effects */
+        .hover-bg { transition: background-color 0.2s; }
+        .hover-bg:hover { background-color: rgba(255, 255, 255, 0.03); cursor: pointer; }
+        .sidebar-icon:hover { background-color: rgba(239, 243, 244, 0.1); }
+        
+        /* Scrollbar hiding */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .action-btn:hover { background-color: rgba(0, 186, 124, 0.1); color: #00ba7c; }
-        .like-btn:hover { background-color: rgba(249, 24, 128, 0.1); color: #f91880; }
         
-        /* Animation for the refresh pill */
+        /* Action Buttons */
+        .action-group { transition: all 0.2s; }
+        .btn-reply:hover svg { fill: #1d9bf0; }
+        .btn-reply:hover .bg-hover { background-color: rgba(29, 155, 240, 0.1); }
+        .btn-reply:hover span { color: #1d9bf0; }
+        
+        .btn-repost:hover svg { fill: #00ba7c; }
+        .btn-repost:hover .bg-hover { background-color: rgba(0, 186, 124, 0.1); }
+        .btn-repost:hover span { color: #00ba7c; }
+
+        .btn-like.is-liked svg { fill: #f91880; }
+        .btn-like.is-liked span { color: #f91880; }
+        .btn-like:not(.is-liked):hover svg { fill: #f91880; }
+        .btn-like:not(.is-liked):hover .bg-hover { background-color: rgba(249, 24, 128, 0.1); }
+        .btn-like:not(.is-liked):hover span { color: #f91880; }
+        
+        .btn-master:hover svg { fill: #ffd400; }
+        .btn-master:hover .bg-hover { background-color: rgba(255, 212, 0, 0.1); }
+        .btn-master:hover span { color: #ffd400; }
+
+        /* Animation */
         @keyframes slideDown {
             from { transform: translate(-50%, -150%); opacity: 0; }
             to { transform: translate(-50%, 0); opacity: 1; }
         }
-        .animate-slide-down {
-            animation: slideDown 0.3s ease-out forwards;
-        }
+        .animate-slide-down { animation: slideDown 0.3s ease-out forwards; }
     </style>
 </head>
 <body class="flex justify-center h-screen overflow-hidden">
     <!-- Sidebar -->
-    <div class="w-20 xl:w-64 flex flex-col justify-between h-full py-4 px-2 xl:px-6">
-        <div class="flex flex-col gap-4">
-            <div class="p-3 w-fit text-2xl font-bold text-white">📖</div>
-            <div class="flex items-center gap-4 p-3 sidebar-icon cursor-pointer w-fit">
-                <span class="text-xl">🏠</span>
-                <span class="hidden xl:inline text-xl font-semibold">Home Feed</span>
+    <div class="w-20 xl:w-64 flex flex-col justify-between h-full py-2 px-2 xl:px-4">
+        <div class="flex flex-col gap-2">
+            <!-- Logo -->
+            <div class="p-3 w-fit text-3xl font-bold text-white sidebar-icon rounded-full cursor-pointer">𝕏</div>
+            
+            <!-- Nav Items -->
+            <div class="flex items-center gap-5 p-3 sidebar-icon rounded-full cursor-pointer w-fit text-xl font-bold text-white">
+                <svg viewBox="0 0 24 24" class="w-7 h-7 fill-current"><g><path d="M12 1.696L.622 8.807l1.06 1.696L3 9.679V19.5C3 20.881 4.119 22 5.5 22h13c1.381 0 2.5-1.119 2.5-2.5V9.679l1.318.824 1.06-1.696L12 1.696zM12 16.5c-1.933 0-3.5-1.567-3.5-3.5s1.567-3.5 3.5-3.5 3.5 1.567 3.5 3.5-1.567 3.5-3.5 3.5z"></path></g></svg>
+                <span class="hidden xl:inline">For You Feed</span>
             </div>
-            <div class="flex items-center gap-4 p-3 sidebar-icon cursor-pointer w-fit">
-                <span class="text-xl">✅</span>
-                <span class="hidden xl:inline text-xl">Mastered</span>
+            <div class="flex items-center gap-5 p-3 sidebar-icon rounded-full cursor-pointer w-fit text-xl text-white">
+                <svg viewBox="0 0 24 24" class="w-7 h-7 fill-current"><g><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"></path></g></svg>
+                <span class="hidden xl:inline">Needs Review</span>
             </div>
-            <div class="flex items-center gap-4 p-3 sidebar-icon cursor-pointer w-fit" onclick="alert('Instructions: Convert your Excel to JSON (using a free online tool) and paste it into the myNotes array in the HTML file source code.')">
-                <span class="text-xl">📊</span>
-                <span class="hidden xl:inline text-xl">Import Data</span>
+            <div class="flex items-center gap-5 p-3 sidebar-icon rounded-full cursor-pointer w-fit text-xl text-white">
+                <svg viewBox="0 0 24 24" class="w-7 h-7 fill-current"><g><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm3.207 7.207l-4 4c-.391.391-1.023.391-1.414 0l-2-2c-.391-.391-.391-1.023 0-1.414s1.023-.391 1.414 0L10.5 11.086l3.293-3.293c.391-.391 1.023-.391 1.414 0s.391 1.023 0 1.414z"></path></g></svg>
+                <span class="hidden xl:inline">Mastered</span>
             </div>
-            <button class="mt-4 bg-[#1d9bf0] hover:bg-[#1a8cd8] text-white font-bold py-3 px-8 rounded-full hidden xl:block transition duration-200">
-                Post Note
+
+            <button class="mt-4 bg-[#1d9bf0] hover:bg-[#1a8cd8] text-white font-bold py-3 px-8 rounded-full hidden xl:block transition duration-200 text-[17px] shadow-sm">
+                Import Notes
+            </button>
+            <button class="mt-4 bg-[#1d9bf0] hover:bg-[#1a8cd8] text-white font-bold w-12 h-12 rounded-full xl:hidden flex items-center justify-center transition duration-200 shadow-sm">
+                <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current"><g><path d="M23 3c-6.62-.1-10.38 2.421-13.05 6.095C7.99 11.91 6 16.206 6 20.5V22h2.5v-1.5c0-3.666 1.76-7.391 3.51-10.145 2.11-3.333 5.4-5.32 10.99-5.355V3zM1 18v-2h4v2H1zM3 14v-2h6v2H3zM5 10V8h6v2H5z"></path></g></svg>
             </button>
         </div>
-        <div class="flex items-center gap-3 p-3 sidebar-icon cursor-pointer w-fit mt-auto">
-            <div class="w-10 h-10 bg-[#d4af37] rounded-full flex items-center justify-center text-black font-bold">JS</div>
-            <div class="hidden xl:block text-sm">
-                <div class="font-bold text-white">Jayesh Sharma</div>
-                <div class="text-gray-500">@jayesh_acca</div>
+        
+        <div class="flex items-center gap-3 p-3 sidebar-icon rounded-full cursor-pointer w-fit mt-auto mb-4">
+            <div class="w-10 h-10 bg-[#d4af37] rounded-full flex items-center justify-center text-black font-bold border border-black">JS</div>
+            <div class="hidden xl:flex flex-col flex-1 mr-4">
+                <div class="font-bold text-[15px] leading-tight text-white">Jayesh Sharma</div>
+                <div class="text-[#71767b] text-[15px] leading-tight">@jayesh_acca</div>
+            </div>
+            <div class="hidden xl:block text-white">
+                <svg viewBox="0 0 24 24" class="w-5 h-5 fill-current"><g><path d="M3 12c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm9 2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm7 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"></path></g></svg>
             </div>
         </div>
     </div>
 
     <!-- Main Feed -->
-    <div class="w-full max-w-[600px] h-full overflow-y-scroll hide-scrollbar border-x border-[#2f3336] flex flex-col relative" id="feed-container">
+    <div class="w-full max-w-[600px] h-full overflow-y-scroll hide-scrollbar border-x border-line flex flex-col relative" id="feed-container">
         <!-- Header -->
-        <div class="sticky top-0 z-30 bg-black/80 backdrop-blur-md border-b border-[#2f3336] p-4 cursor-pointer" onclick="scrollToTop()">
-            <h1 class="text-xl font-bold text-white">ACCA Business & Technology</h1>
+        <div class="sticky top-0 z-30 bg-black/70 backdrop-blur-md border-b border-line cursor-pointer" onclick="scrollToTop()">
+            <h1 class="text-[20px] font-bold text-white px-4 py-3">ACCA Business & Technology</h1>
+            <div class="flex w-full">
+                <div class="w-1/2 flex justify-center hover:bg-white/[0.03] transition cursor-pointer relative">
+                    <div class="py-3 font-bold text-white">For you</div>
+                    <div class="absolute bottom-0 h-1 w-14 bg-[#1d9bf0] rounded-full"></div>
+                </div>
+                <div class="w-1/2 flex justify-center hover:bg-white/[0.03] transition cursor-pointer text-[#71767b]">
+                    <div class="py-3 font-medium">Following</div>
+                </div>
+            </div>
         </div>
         
-        <!-- Refresh Pill (Hidden by default) -->
-        <div id="refresh-pill" class="hidden absolute top-16 left-1/2 transform -translate-x-1/2 bg-[#1d9bf0] text-white px-4 py-2 rounded-full cursor-pointer z-20 shadow-md hover:bg-[#1a8cd8] transition text-sm font-bold" onclick="refreshFeed()">
+        <!-- Refresh Pill -->
+        <div id="refresh-pill" class="hidden absolute top-28 left-1/2 transform -translate-x-1/2 bg-[#1d9bf0] text-white px-4 py-2 rounded-full cursor-pointer z-20 shadow-md hover:bg-[#1a8cd8] transition text-[15px] font-bold" onclick="refreshFeed()">
             <span id="refresh-text">Post new notes</span>
         </div>
         
         <!-- Tweets Container -->
         <div id="tweets"></div>
         
-        <!-- Loading Spinner / Observer Target -->
-        <div id="loading" class="p-6 text-center text-[#1d9bf0]">
-            <svg class="animate-spin h-8 w-8 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <!-- Loading Spinner -->
+        <div id="loading" class="p-8 text-center text-[#1d9bf0] flex justify-center border-b border-line">
+            <svg class="animate-spin h-7 w-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
@@ -81,34 +123,49 @@
     </div>
 
     <!-- Right Panel -->
-    <div class="hidden lg:block w-80 p-4 pl-8">
-        <div class="bg-[#16181c] rounded-2xl p-4 mb-4">
-            <h2 class="text-xl font-bold text-white mb-4">Study Stats</h2>
-            <div class="text-sm text-gray-400 mb-2">Mastered Today</div>
-            <div class="text-3xl font-bold text-white" id="mastered-count">0</div>
+    <div class="hidden lg:block w-[350px] p-4 pl-8">
+        <!-- Search bar -->
+        <div class="bg-[#202327] rounded-full flex items-center px-4 py-2 mb-4 focus-within:bg-black focus-within:ring-1 focus-within:ring-[#1d9bf0] border border-transparent focus-within:border-[#1d9bf0]">
+            <svg viewBox="0 0 24 24" class="w-5 h-5 fill-[#71767b]"><g><path d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.824 5.262l4.781 4.781-1.414 1.414-4.781-4.781c-1.447 1.142-3.276 1.824-5.262 1.824-4.694 0-8.5-3.806-8.5-8.5z"></path></g></svg>
+            <input type="text" placeholder="Search notes" class="bg-transparent text-white w-full outline-none ml-3 text-[15px] placeholder-[#71767b]">
         </div>
-        <div class="bg-[#16181c] rounded-2xl p-4">
-            <h2 class="text-xl font-bold text-white mb-4">Trending Topics</h2>
-            <div class="mb-4">
-                <div class="text-xs text-gray-500">Business & Tech</div>
-                <div class="font-bold text-white">Microeconomics</div>
-                <div class="text-xs text-gray-500">1,204 notes</div>
+
+        <div class="bg-[#16181c] rounded-2xl pt-3 pb-1 border border-line">
+            <h2 class="text-[20px] font-extrabold text-white px-4 mb-3">Study Stats</h2>
+            <div class="hover-bg px-4 py-3">
+                <div class="text-[13px] text-[#71767b] flex justify-between">
+                    <span>Your Progress</span>
+                    <svg viewBox="0 0 24 24" class="w-4 h-4 fill-[#71767b]"><g><path d="M3 12c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm9 2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm7 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"></path></g></svg>
+                </div>
+                <div class="font-bold text-white text-[15px] mt-1">Mastered Today</div>
+                <div class="text-[#71767b] text-[13px] mt-1"><span class="font-bold text-white text-lg" id="mastered-count">0</span> notes completely memorized</div>
             </div>
-            <div class="mb-4">
-                <div class="text-xs text-gray-500">Data Privacy</div>
-                <div class="font-bold text-white">Data Controller vs Subject</div>
-                <div class="text-xs text-gray-500">842 notes</div>
+        </div>
+
+        <div class="bg-[#16181c] rounded-2xl pt-3 pb-1 border border-line mt-4">
+            <h2 class="text-[20px] font-extrabold text-white px-4 mb-3">What's happening</h2>
+            
+            <div class="hover-bg px-4 py-3 cursor-pointer">
+                <div class="text-[13px] text-[#71767b]">Business & Tech · Trending</div>
+                <div class="font-bold text-white text-[15px] mt-1">Microeconomics</div>
+                <div class="text-[#71767b] text-[13px] mt-1">1,204 notes</div>
             </div>
-            <div>
-                <div class="text-xs text-gray-500">Organisational Structure</div>
-                <div class="font-bold text-white">Span of Control</div>
-                <div class="text-xs text-gray-500">512 notes</div>
+            
+            <div class="hover-bg px-4 py-3 cursor-pointer">
+                <div class="text-[13px] text-[#71767b]">Data Privacy · Trending</div>
+                <div class="font-bold text-white text-[15px] mt-1">Data Controller vs Subject</div>
+                <div class="text-[#71767b] text-[13px] mt-1">842 notes</div>
+            </div>
+            
+            <div class="hover-bg px-4 py-3 cursor-pointer">
+                <div class="text-[13px] text-[#71767b]">Organisational Structure · Trending</div>
+                <div class="font-bold text-white text-[15px] mt-1">Span of Control</div>
+                <div class="text-[#71767b] text-[13px] mt-1">512 notes</div>
             </div>
         </div>
     </div>
 
     <script>
-        // Data populated from ACCA BT Notes
         const myNotes = [
             { id: 1, subject: "ACCA BT", topic: "Business Organisation", text: "A social arrangement to achieve collective goals through controlled performance.", mastered: false },
             { id: 2, subject: "ACCA BT", topic: "Stakeholder", text: "An entity that can affect or be affected by an organisation.", mastered: false },
@@ -128,10 +185,9 @@
             { id: 16, subject: "ACCA BT", topic: "Committee", text: "A group of individuals committed to achieving a purpose.", mastered: false }
         ];
 
-        // Fake users for randomized notes
         const fakeUsers = [
             { name: "Audit Ninja", handle: "audit_ninja", color: "from-red-500 to-orange-500", initials: "AN" },
-            { name: "Tax Master", handle: "tax_master", color: "from-green-400 to-cyan-500", initials: "TM" },
+            { name: "Tax Master", handle: "tax_master", color: "from-emerald-400 to-cyan-500", initials: "TM" },
             { name: "Finance Bro", handle: "finance_bro", color: "from-blue-500 to-indigo-600", initials: "FB" },
             { name: "ACCA Guru", handle: "acca_guru", color: "from-purple-500 to-pink-500", initials: "AG" },
             { name: "Study Bot", handle: "study_bot", color: "from-gray-700 to-gray-900", initials: "SB" },
@@ -141,59 +197,80 @@
         const tweetsContainer = document.getElementById('tweets');
         const loadingElement = document.getElementById('loading');
         let masteredCount = 0;
+        let isFetching = false;
 
         function getRandomTime() {
-            const units = ['m', 'h', 'd'];
+            const units = ['m', 'h'];
             const unit = units[Math.floor(Math.random() * units.length)];
-            let value;
-            if (unit === 'm') value = Math.floor(Math.random() * 59) + 1;
-            if (unit === 'h') value = Math.floor(Math.random() * 23) + 1;
-            if (unit === 'd') value = Math.floor(Math.random() * 5) + 1;
+            let value = unit === 'm' ? Math.floor(Math.random() * 59) + 1 : Math.floor(Math.random() * 23) + 1;
             return `${value}${unit}`;
         }
 
         function createTweetElement(note) {
             const div = document.createElement('div');
-            div.className = "p-4 border-b border-[#2f3336] hover:bg-white/[0.03] transition duration-200";
+            div.className = "px-4 pt-3 pb-2 border-b border-line hover-bg flex gap-3";
             
-            // Randomize user, time, and likes
             const user = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
             const timeAgo = getRandomTime();
             const initialLikes = Math.floor(Math.random() * 800) + 12;
+            const replies = Math.floor(Math.random() * 40) + 1;
+            const reposts = Math.floor(Math.random() * 100) + 1;
 
             div.innerHTML = `
-                <div class="flex gap-4">
-                    <div class="w-10 h-10 rounded-full bg-gradient-to-br ${user.color} flex-shrink-0 flex items-center justify-center text-white font-bold text-xs">
-                        ${user.initials}
+                <!-- Avatar -->
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br ${user.color} flex-shrink-0 flex items-center justify-center text-white font-bold text-sm shadow-sm">
+                    ${user.initials}
+                </div>
+                
+                <!-- Content -->
+                <div class="flex-1 min-w-0">
+                    <!-- User Info & Timestamp -->
+                    <div class="flex items-center gap-1 text-[15px] mb-0.5">
+                        <span class="font-bold text-white hover:underline cursor-pointer truncate">${user.name}</span>
+                        <span class="text-[#71767b] truncate">@${user.handle}</span>
+                        <span class="text-[#71767b]">·</span>
+                        <span class="text-[#71767b] hover:underline cursor-pointer">${timeAgo}</span>
                     </div>
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-center gap-1 text-sm mb-1">
-                            <span class="font-bold text-white hover:underline cursor-pointer">${user.name}</span>
-                            <span class="text-gray-500">@${user.handle}</span>
-                            <span class="text-gray-500">·</span>
-                            <span class="text-gray-500 hover:underline cursor-pointer">${timeAgo}</span>
-                        </div>
-                        <div class="text-white text-[15px] mb-3 leading-normal font-medium">
-                            <span class="text-[#1d9bf0]">#${note.topic.replace(/\s+/g, '')}</span><br><br>
-                            ${note.text}
-                        </div>
+                    
+                    <!-- Note Body (Title + Definition format) -->
+                    <div class="text-[#e7e9ea] text-[15px] mb-3 leading-snug">
+                        <span class="font-bold text-white text-[16px]">${note.topic}:</span> 
+                        <span class="text-[#e7e9ea]">${note.text}</span>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="flex justify-between text-[#71767b] max-w-md mt-1 mb-1 pr-8">
                         
-                        <div class="flex justify-between text-gray-500 max-w-sm pr-4">
-                            <!-- Like Button -->
-                            <div class="flex items-center gap-2 group cursor-pointer like-btn p-2 -ml-2 rounded-full transition" onclick="toggleLike(this, ${initialLikes})">
-                                <div class="p-2 rounded-full group-hover:bg-[#f91880]/10 transition-colors -m-2 mr-0">
-                                    <svg viewBox="0 0 24 24" class="w-5 h-5 fill-current transition-colors"><g><path d="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"></path></g></svg>
-                                </div>
-                                <span class="text-sm transition-colors like-count">${initialLikes}</span>
+                        <!-- Reply (Decorative) -->
+                        <div class="flex items-center group cursor-pointer btn-reply action-group">
+                            <div class="p-2 rounded-full bg-hover -ml-2 transition-colors">
+                                <svg viewBox="0 0 24 24" class="w-[18.5px] h-[18.5px] fill-current transition-colors"><g><path d="M1.751 10c0-4.42 3.584-8 8.005-8h4.366c4.49 0 8.129 3.64 8.129 8.13 0 2.96-1.607 5.68-4.196 7.11l-8.054 4.46v-3.69h-.067c-4.49.1-8.183-3.51-8.183-8.01zm8.005-6c-3.317 0-6.005 2.69-6.005 6 0 3.37 2.77 6.08 6.138 6.01l.351-.01h1.761v2.3l5.087-2.81c1.951-1.08 3.163-3.13 3.163-5.36 0-3.39-2.744-6.13-6.129-6.13H9.756z"></path></g></svg>
                             </div>
+                            <span class="text-[13px] transition-colors ml-1">${replies}</span>
+                        </div>
 
-                            <!-- Mark Mastered Button -->
-                            <div class="flex items-center gap-2 group cursor-pointer action-btn p-2 rounded-full transition" onclick="markMastered(this)">
-                                <div class="p-2 rounded-full group-hover:bg-[#00ba7c]/10 transition-colors -m-2 mr-0">
-                                    <svg viewBox="0 0 24 24" class="w-5 h-5 fill-current"><g><path d="M12 3.75c-4.55 0-8.25 3.69-8.25 8.25s3.69 8.25 8.25 8.25 8.25-3.69 8.25-8.25S16.55 3.75 12 3.75zM1.75 12C1.75 6.34 6.34 1.75 12 1.75S22.25 6.34 22.25 12 22.25 22.25 12 22.25 1.75 22.25 1.75 12zM16.28 9.22c.29-.29.29-.77 0-1.06s-.77-.29-1.06 0l-4.47 4.47-2.22-2.22c-.29-.29-.77-.29-1.06 0s-.29.77 0 1.06l2.75 2.75c.15.15.34.22.53.22s.38-.07.53-.22l5-5z"></path></g></svg>
-                                </div>
-                                <span class="text-sm group-hover:text-[#00ba7c]">Mark Mastered</span>
+                        <!-- Repost (Decorative) -->
+                        <div class="flex items-center group cursor-pointer btn-repost action-group">
+                            <div class="p-2 rounded-full bg-hover -ml-2 transition-colors">
+                                <svg viewBox="0 0 24 24" class="w-[18.5px] h-[18.5px] fill-current transition-colors"><g><path d="M4.5 3.88l4.432 4.14-1.364 1.46L5.5 7.55V16c0 1.1.896 2 2 2H13v2H7.5c-2.209 0-4-1.79-4-4V7.55L1.432 9.48.068 8.02 4.5 3.88zM16.5 6H11V4h5.5c2.209 0 4 1.79 4 4v8.45l2.068-1.93 1.364 1.46-4.432 4.14-4.432-4.14 1.364-1.46 2.068 1.93V8c0-1.1-.896-2-2-2z"></path></g></svg>
                             </div>
+                            <span class="text-[13px] transition-colors ml-1">${reposts}</span>
+                        </div>
+
+                        <!-- Like Button -->
+                        <div class="flex items-center group cursor-pointer btn-like action-group" onclick="toggleLike(this, ${initialLikes})">
+                            <div class="p-2 rounded-full bg-hover -ml-2 transition-colors">
+                                <svg viewBox="0 0 24 24" class="w-[18.5px] h-[18.5px] fill-current transition-colors"><g><path d="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"></path></g></svg>
+                            </div>
+                            <span class="text-[13px] transition-colors ml-1 like-count">${initialLikes}</span>
+                        </div>
+
+                        <!-- Mark Mastered (Star icon) -->
+                        <div class="flex items-center group cursor-pointer btn-master action-group" onclick="markMastered(this)">
+                            <div class="p-2 rounded-full bg-hover -ml-2 transition-colors">
+                                <svg viewBox="0 0 24 24" class="w-[18.5px] h-[18.5px] fill-current transition-colors"><g><path d="M12 1.75l3.25 7.1 7.75 1.15-5.6 5.45 1.3 7.75-6.7-3.55-6.7 3.55 1.3-7.75-5.6-5.45 7.75-1.15L12 1.75zM12 5.3l-2.2 4.85-5.25.8 3.8 3.7-.9 5.25 4.55-2.4 4.55 2.4-.9-5.25 3.8-3.7-5.25-.8L12 5.3z"></path></g></svg>
+                            </div>
+                            <span class="text-[13px] font-medium transition-colors ml-1 group-hover:text-[#ffd400]">Mastered</span>
                         </div>
                     </div>
                 </div>
@@ -205,79 +282,76 @@
         window.toggleLike = function(element, baseCount) {
             const svgPath = element.querySelector('svg path');
             const span = element.querySelector('.like-count');
-            
-            // Check if already liked by looking for the filled heart path or a custom class
             const isLiked = element.classList.contains('is-liked');
             
             if (isLiked) {
-                // Unlike
-                element.classList.remove('is-liked', 'text-[#f91880]');
-                svgPath.setAttribute('d', 'M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z'); // Empty heart
+                element.classList.remove('is-liked');
+                svgPath.setAttribute('d', 'M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z');
                 span.innerText = baseCount;
             } else {
-                // Like
-                element.classList.add('is-liked', 'text-[#f91880]');
-                svgPath.setAttribute('d', 'M20.884 13.19c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z'); // Filled heart
+                element.classList.add('is-liked');
+                svgPath.setAttribute('d', 'M20.884 13.19c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z');
                 span.innerText = baseCount + 1;
                 
-                // Add tiny pop animation
-                element.style.transform = "scale(1.1)";
-                setTimeout(() => { element.style.transform = "scale(1)"; }, 150);
+                // Pop animation
+                const iconContainer = element.querySelector('.p-2');
+                iconContainer.style.transform = "scale(1.2)";
+                setTimeout(() => { iconContainer.style.transform = "scale(1)"; }, 150);
             }
         }
 
         // Mastered Logic
         window.markMastered = function(element) {
-            const tweetDiv = element.closest('.p-4');
-            tweetDiv.style.opacity = '0.5';
-            element.innerHTML = '<span class="text-[#00ba7c] font-bold">Mastered!</span>';
-            element.style.pointerEvents = 'none';
+            const tweetDiv = element.closest('.border-b');
+            tweetDiv.style.opacity = '0.3';
+            tweetDiv.style.pointerEvents = 'none';
             
-            // Disable like button on mastered notes
-            const likeBtn = tweetDiv.querySelector('.like-btn');
-            if(likeBtn) likeBtn.style.pointerEvents = 'none';
-
+            // Fill star icon
+            const svgPath = element.querySelector('svg path');
+            svgPath.setAttribute('d', 'M12 1.75l3.25 7.1 7.75 1.15-5.6 5.45 1.3 7.75-6.7-3.55-6.7 3.55 1.3-7.75-5.6-5.45 7.75-1.15L12 1.75z');
+            element.classList.add('is-liked');
+            element.querySelector('svg').style.fill = '#ffd400';
+            
             masteredCount++;
             document.getElementById('mastered-count').innerText = masteredCount;
             
             setTimeout(() => {
                 tweetDiv.style.display = 'none';
-            }, 1000);
+            }, 800);
         }
 
-        // Load More Notes (Infinite Scroll)
+        // Robust Load More Notes Logic
         function loadMoreNotes() {
+            if (isFetching) return;
+            isFetching = true;
+            
             setTimeout(() => {
                 const fragment = document.createDocumentFragment();
-                
-                // Always pull random notes for an infinite feed
-                for(let i=0; i<5; i++) {
+                for(let i=0; i<8; i++) {
                     const randomNote = myNotes[Math.floor(Math.random() * myNotes.length)];
                     fragment.appendChild(createTweetElement(randomNote));
                 }
-                
                 tweetsContainer.appendChild(fragment);
-            }, 800);
+                isFetching = false;
+            }, 400);
         }
 
         // Refresh Pill Logic
         setInterval(() => {
             const pill = document.getElementById('refresh-pill');
-            const numPosts = Math.floor(Math.random() * 5) + 2;
+            const numPosts = Math.floor(Math.random() * 4) + 2;
             document.getElementById('refresh-text').innerText = `Post ${numPosts} new notes`;
             pill.classList.remove('hidden');
             pill.classList.add('animate-slide-down');
-        }, 30000); // Trigger every 30 seconds
+        }, 45000); 
 
         window.refreshFeed = function() {
             const pill = document.getElementById('refresh-pill');
             pill.classList.add('hidden');
             pill.classList.remove('animate-slide-down');
             
-            // Scroll to top
             document.getElementById('feed-container').scrollTo({ top: 0, behavior: 'smooth' });
             
-            // Add a few new notes to the top
             const fragment = document.createDocumentFragment();
             for(let i=0; i<3; i++) {
                 const randomNote = myNotes[Math.floor(Math.random() * myNotes.length)];
@@ -290,11 +364,11 @@
             document.getElementById('feed-container').scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Intersection Observer for Infinite Scroll
+        // Fixed Intersection Observer for truly infinite scroll
         const observerOptions = {
             root: document.getElementById('feed-container'),
-            rootMargin: '0px',
-            threshold: 1.0
+            rootMargin: '400px', // Load way before reaching the bottom
+            threshold: 0
         };
 
         const observer = new IntersectionObserver((entries) => {
@@ -305,8 +379,9 @@
 
         observer.observe(loadingElement);
         
-        // Initial Load
-        loadMoreNotes();
+        // Initial Load (Load 10 to ensure we overflow the screen and observer works)
+        for(let i=0; i<2; i++) loadMoreNotes();
+
     </script>
 </body>
 </html>
